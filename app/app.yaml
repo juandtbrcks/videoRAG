@@ -1,0 +1,45 @@
+command:
+  - "streamlit"
+  - "run"
+  - "app.py"
+  - "--server.port"
+  - "8000"
+  - "--server.address"
+  - "0.0.0.0"
+  - "--server.headless"
+  - "true"
+  - "--server.enableCORS"
+  - "false"
+  - "--server.enableXsrfProtection"
+  - "false"
+
+env:
+  # --- Lakebase (proyecto AUTOSCALING: params planos, sin binding `database`) ---
+  # PGUSER = client_id del service principal de la App (su rol de Postgres).
+  # Se rellena tras crear la App (databricks apps get -> service_principal_client_id).
+  - name: PGHOST
+    value: ep-polished-heart-d2wgybwr.database.us-east-1.cloud.databricks.com
+  - name: PGPORT
+    value: "5432"
+  - name: PGDATABASE
+    value: databricks_postgres
+  - name: PGUSER
+    value: "c8d1b5ef-edd7-44b1-a05e-631e53d14832"
+
+  # --- Almacenamiento (UC Volumes) ---
+  - name: UC_CATALOG
+    value: jgworkspaceclassic_catalog
+  - name: UC_SCHEMA
+    value: video_indexer
+
+  # --- Jobs de indexación (CPU y GPU) ---
+  - name: INDEXER_JOB_ID
+    value: "552091141704054"
+  - name: INDEXER_JOB_ID_GPU
+    value: "1108962426104160"
+
+  # --- Foundation Models ---
+  - name: EMBEDDING_ENDPOINT
+    value: databricks-gte-large-en
+  - name: LLM_ENDPOINT
+    value: databricks-claude-sonnet-5
