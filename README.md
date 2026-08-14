@@ -2,7 +2,7 @@
 
 **Indexación y búsqueda semántica de videos sobre Databricks + Lakebase (pgvector).**
 
-videoRAG es una [Databricks App](https://docs.databricks.com/en/dev-tools/databricks-apps/index.html) (Streamlit) inspirada en Azure AI Video Indexer, pero nativa en Databricks. Permite **subir videos**, **indexarlos** (transcripción de audio, OCR de los cuadros, extracción de entidades, temas y capítulos), **buscarlos semánticamente** y **conversar con un agente RAG** que responde citando el video y el minuto exacto.
+videoRAG es una [Databricks App](https://docs.databricks.com/en/dev-tools/databricks-apps/index.html) (Streamlit) nativa en Databricks. Permite **subir videos**, **indexarlos** (transcripción de audio, OCR de los cuadros, extracción de entidades, temas y capítulos), **buscarlos semánticamente** y **conversar con un agente RAG** que responde citando el video y el minuto exacto.
 
 Todo el contenido indexado y sus *embeddings* viven en **Lakebase** (PostgreSQL gestionado) usando **pgvector**.
 
