@@ -1,0 +1,83 @@
+<mxGraphModel dx="1200" dy="700" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1200" pageHeight="700" math="0" shadow="0">
+  <root>
+    <mxCell id="0"/>
+    <mxCell id="1" parent="0"/>
+
+    <!-- Phase containers (drawn first = behind) -->
+    <mxCell id="cIndex" value="1) Indexación — Job de Databricks" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF6F4;strokeColor=#FFC9BD;verticalAlign=top;align=left;spacingLeft=12;spacingTop=8;fontColor=#FF3621;fontSize=13;fontStyle=1;" vertex="1" parent="1">
+      <mxGeometry x="430" y="108" width="470" height="198" as="geometry"/>
+    </mxCell>
+    <mxCell id="cQuery" value="2) Consulta" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EEF4FF;strokeColor=#BDD3FF;verticalAlign=top;align=left;spacingLeft=12;spacingTop=8;fontColor=#1A56DB;fontSize=13;fontStyle=1;" vertex="1" parent="1">
+      <mxGeometry x="430" y="430" width="470" height="196" as="geometry"/>
+    </mxCell>
+
+    <!-- Core nodes -->
+    <mxCell id="usuario" value="Usuario" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#C9D1D9;fontColor=#1B3139;fontSize=13;fontStyle=1;" vertex="1" parent="1">
+      <mxGeometry x="40" y="330" width="120" height="60" as="geometry"/>
+    </mxCell>
+    <mxCell id="app" value="videoRAG App&#10;(Databricks App · Streamlit)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFECE8;strokeColor=#FF3621;strokeWidth=2;fontColor=#1B3139;fontSize=12;fontStyle=1;" vertex="1" parent="1">
+      <mxGeometry x="210" y="318" width="170" height="86" as="geometry"/>
+    </mxCell>
+
+    <!-- Indexación chips -->
+    <mxCell id="ffmpeg" value="ffmpeg&#10;(audio + frames)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#E7C3BB;fontColor=#1B3139;fontSize=11;" vertex="1" parent="1">
+      <mxGeometry x="448" y="146" width="116" height="46" as="geometry"/>
+    </mxCell>
+    <mxCell id="whisper" value="Whisper&#10;(transcripción)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#E7C3BB;fontColor=#1B3139;fontSize=11;" vertex="1" parent="1">
+      <mxGeometry x="588" y="146" width="118" height="46" as="geometry"/>
+    </mxCell>
+    <mxCell id="ocr" value="OCR de frames&#10;(ai_parse_document · SQL WH)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#E7C3BB;fontColor=#1B3139;fontSize=11;" vertex="1" parent="1">
+      <mxGeometry x="730" y="146" width="152" height="46" as="geometry"/>
+    </mxCell>
+    <mxCell id="llm_ins" value="LLM · insights&#10;(resumen · temas · entidades · capítulos)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#E7C3BB;fontColor=#1B3139;fontSize=11;" vertex="1" parent="1">
+      <mxGeometry x="448" y="234" width="230" height="46" as="geometry"/>
+    </mxCell>
+    <mxCell id="emb" value="embeddings&#10;(por chunk, 1024d)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#E7C3BB;fontColor=#1B3139;fontSize=11;" vertex="1" parent="1">
+      <mxGeometry x="700" y="234" width="182" height="46" as="geometry"/>
+    </mxCell>
+
+    <!-- Consulta chips -->
+    <mxCell id="busqueda" value="Búsqueda semántica&#10;(embed → pgvector top-k)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#BDD3FF;fontColor=#1B3139;fontSize=12;" vertex="1" parent="1">
+      <mxGeometry x="452" y="470" width="205" height="86" as="geometry"/>
+    </mxCell>
+    <mxCell id="agente" value="Agente RAG&#10;(embed → retrieve → LLM + citas)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#BDD3FF;fontColor=#1B3139;fontSize=12;" vertex="1" parent="1">
+      <mxGeometry x="672" y="470" width="210" height="86" as="geometry"/>
+    </mxCell>
+
+    <!-- Services -->
+    <mxCell id="fm" value="Foundation Models&#10;(embeddings · LLM)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F1F3F5;strokeColor=#C9D1D9;fontColor=#1B3139;fontSize=12;fontStyle=1;" vertex="1" parent="1">
+      <mxGeometry x="960" y="150" width="196" height="74" as="geometry"/>
+    </mxCell>
+    <mxCell id="lakebase" value="Lakebase&#10;(pgvector · HNSW)" style="shape=cylinder;whiteSpace=wrap;html=1;fillColor=#F1F3F5;strokeColor=#1B3139;fontColor=#1B3139;fontSize=12;fontStyle=1;" vertex="1" parent="1">
+      <mxGeometry x="965" y="315" width="185" height="96" as="geometry"/>
+    </mxCell>
+    <mxCell id="volume" value="UC Volume&#10;(videos · frames)" style="shape=cylinder;whiteSpace=wrap;html=1;fillColor=#F1F3F5;strokeColor=#C9D1D9;fontColor=#1B3139;fontSize=12;fontStyle=1;" vertex="1" parent="1">
+      <mxGeometry x="965" y="470" width="185" height="84" as="geometry"/>
+    </mxCell>
+
+    <!-- Edges -->
+    <mxCell id="e1" value="usa" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;strokeColor=#5A6672;fontColor=#5A6672;fontSize=10;" edge="1" parent="1" source="usuario" target="app"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell id="e2" value="run_now (indexar)" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;strokeColor=#FF3621;fontColor=#FF3621;fontSize=10;strokeWidth=1.6;" edge="1" parent="1" source="app" target="ffmpeg"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell id="e3" value="consultar" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;strokeColor=#1A56DB;fontColor=#1A56DB;fontSize=10;strokeWidth=1.6;" edge="1" parent="1" source="app" target="busqueda"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell id="e4" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;strokeColor=#1A56DB;strokeWidth=1.6;" edge="1" parent="1" source="app" target="agente"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell id="e5" value="sube video" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;strokeColor=#5A6672;fontColor=#5A6672;fontSize=10;" edge="1" parent="1" source="app" target="volume"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell id="e6" value="lee audio/frames" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;strokeColor=#5A6672;fontColor=#5A6672;fontSize=10;" edge="1" parent="1" source="volume" target="ffmpeg"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+    <mxCell id="i1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;strokeColor=#8B95A1;" edge="1" parent="1" source="ffmpeg" target="whisper"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell id="i2" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;strokeColor=#8B95A1;" edge="1" parent="1" source="ffmpeg" target="ocr"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell id="i3" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;strokeColor=#8B95A1;" edge="1" parent="1" source="whisper" target="llm_ins"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell id="i4" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;strokeColor=#8B95A1;" edge="1" parent="1" source="whisper" target="emb"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell id="i5" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;strokeColor=#8B95A1;" edge="1" parent="1" source="ocr" target="emb"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+    <mxCell id="e7" value="embeddings" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;strokeColor=#5A6672;fontColor=#5A6672;fontSize=10;" edge="1" parent="1" source="emb" target="fm"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell id="e8" value="LLM" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;strokeColor=#5A6672;fontColor=#5A6672;fontSize=10;" edge="1" parent="1" source="llm_ins" target="fm"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell id="e9" value="escribe chunks" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;strokeColor=#5A6672;fontColor=#5A6672;fontSize=10;" edge="1" parent="1" source="emb" target="lakebase"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell id="e10" value="metadata" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;strokeColor=#5A6672;fontColor=#5A6672;fontSize=10;" edge="1" parent="1" source="llm_ins" target="lakebase"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+    <mxCell id="e11" value="embed" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;startArrow=block;strokeColor=#1A56DB;fontColor=#1A56DB;fontSize=10;" edge="1" parent="1" source="busqueda" target="fm"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell id="e12" value="top-k" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;startArrow=block;strokeColor=#1A56DB;fontColor=#1A56DB;fontSize=10;" edge="1" parent="1" source="busqueda" target="lakebase"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell id="e13" value="embed · LLM" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;startArrow=block;strokeColor=#1A56DB;fontColor=#1A56DB;fontSize=10;" edge="1" parent="1" source="agente" target="fm"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell id="e14" value="retrieve top-k" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;startArrow=block;strokeColor=#1A56DB;fontColor=#1A56DB;fontSize=10;" edge="1" parent="1" source="agente" target="lakebase"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell id="e15" value="resultados + citas" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;dashed=1;strokeColor=#1A56DB;fontColor=#1A56DB;fontSize=10;" edge="1" parent="1" source="lakebase" target="app"><mxGeometry relative="1" as="geometry"/></mxCell>
+  </root>
+</mxGraphModel>

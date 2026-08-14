@@ -1,0 +1,58 @@
+digraph videoRAG {
+    rankdir=LR;
+    labelloc="t";
+    fontname="Helvetica";
+    fontsize=18;
+    label="videoRAG — Arquitectura (Databricks + Lakebase pgvector)";
+    node [shape=box, style="filled,rounded", fontname="Helvetica", fontsize=11,
+          fillcolor="#F5F6F8", color="#C9D1D9"];
+    edge [color="#5A6672", penwidth=1.4, fontname="Helvetica", fontsize=10];
+
+    usuario [label="Usuario", fillcolor="#FFFFFF"];
+    app [label="videoRAG App\n(Databricks App · Streamlit)", fillcolor="#FFECE8",
+         color="#FF3621", penwidth=2];
+
+    subgraph cluster_index {
+        label="1) Indexacion — Job de Databricks";
+        fontname="Helvetica"; fontsize=13; fontcolor="#FF3621";
+        color="#FFC9BD"; style="rounded,filled"; fillcolor="#FFF6F4";
+        ffmpeg  [label="ffmpeg\n(audio + frames)", fillcolor="#FFFFFF"];
+        whisper [label="Whisper\n(transcripcion)", fillcolor="#FFFFFF"];
+        ocr     [label="OCR de frames\n(ai_parse_document · SQL WH)", fillcolor="#FFFFFF"];
+        llm_ins [label="LLM · insights\n(resumen · temas · entidades · capitulos)", fillcolor="#FFFFFF"];
+        emb     [label="embeddings\n(por chunk, 1024d)", fillcolor="#FFFFFF"];
+        ffmpeg -> whisper;
+        ffmpeg -> ocr;
+        whisper -> llm_ins;
+        whisper -> emb;
+        ocr -> emb;
+    }
+
+    subgraph cluster_query {
+        label="2) Consulta";
+        fontname="Helvetica"; fontsize=13; fontcolor="#1A56DB";
+        color="#BDD3FF"; style="rounded,filled"; fillcolor="#EEF4FF";
+        busqueda [label="Busqueda semantica\n(embed -> pgvector top-k)", fillcolor="#FFFFFF"];
+        agente   [label="Agente RAG\n(embed -> retrieve -> LLM + citas)", fillcolor="#FFFFFF"];
+    }
+
+    fm       [label="Foundation Models\n(embeddings · LLM)", fillcolor="#F1F3F5"];
+    lakebase [label="Lakebase\n(pgvector · HNSW)", shape=cylinder, fillcolor="#F1F3F5", color="#1B3139"];
+    volume   [label="UC Volume\n(videos · frames)", shape=cylinder, fillcolor="#F1F3F5"];
+
+    usuario -> app [label="usa"];
+    app -> ffmpeg [label="run_now (indexar)", color="#FF3621", fontcolor="#FF3621"];
+    app -> busqueda [label="consultar", color="#1A56DB", fontcolor="#1A56DB"];
+    app -> agente [color="#1A56DB"];
+    app -> volume [label="sube video"];
+    volume -> ffmpeg [label="lee audio/frames"];
+    emb -> fm [label="embeddings"];
+    llm_ins -> fm [label="LLM"];
+    emb -> lakebase [label="escribe chunks"];
+    llm_ins -> lakebase [label="metadata"];
+    busqueda -> fm [label="embed"];
+    busqueda -> lakebase [label="top-k"];
+    agente -> fm [label="embed · LLM"];
+    agente -> lakebase [label="retrieve top-k"];
+    lakebase -> app [label="resultados + citas", style=dashed, color="#1A56DB", fontcolor="#1A56DB"];
+}
