@@ -27,47 +27,7 @@ Todo el contenido indexado y sus *embeddings* viven en **Lakebase** (PostgreSQL 
 
 ## 🏗️ Arquitectura
 
-```mermaid
-flowchart TB
-    U(["👤 Usuario"])
-    APP["Databricks App · Streamlit"]
-    FM["Foundation Models<br/>(embeddings + LLM)"]
-    LB[("Lakebase · pgvector")]
-    VOL[("UC Volume<br/>videos + frames")]
-
-    %% ---------- Indexación ----------
-    subgraph ING["① Indexación (Job)"]
-        direction LR
-        FF["ffmpeg<br/>audio + frames"] --> WH["Whisper<br/>transcripción"]
-        FF --> OCR["ai_parse_document<br/>OCR de frames · SQL Warehouse"]
-        WH --> ENR["LLM: resumen · temas<br/>entidades · capítulos"]
-        WH --> EMB["embeddings por chunk"]
-        OCR --> EMB
-    end
-
-    %% ---------- Consulta ----------
-    subgraph QRY["② Consulta"]
-        direction LR
-        SR["🔍 Búsqueda semántica"]
-        AG["💬 Agente RAG"]
-    end
-
-    U -->|sube video| APP
-    APP -->|escribe| VOL
-    APP -->|run_now| ING
-    FF -.lee.-> VOL
-    ENR --> LB
-    EMB --> LB
-
-    U -->|busca / pregunta| APP
-    APP --> QRY
-    SR -->|1· embed del query| FM
-    SR -->|2· cosine / HNSW top-k| LB
-    AG -->|1· embed del query| FM
-    AG -->|2· retrieve top-k| LB
-    AG -->|3· prompt + contexto| FM
-    QRY ==>|resultados / respuesta<br/>con citas video + minuto| APP
-```
+![Arquitectura de videoRAG](docs/architecture.svg)
 
 **Flujo de consulta:**
 - **🔍 Búsqueda semántica** — el texto del query se convierte a *embedding* (Foundation Models) y se buscan los chunks más cercanos en Lakebase (`cosine` sobre índice **HNSW** de pgvector). Devuelve fragmentos de transcripción y/o OCR con su video y timestamp; se puede acotar a la colección activa o a todas.

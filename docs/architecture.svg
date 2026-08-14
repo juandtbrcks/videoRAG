@@ -1,0 +1,146 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="arw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8B95A1"/>
+    </marker>
+    <marker id="arwR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#FF3621"/>
+    </marker>
+  </defs>
+
+  <!-- background -->
+  <rect x="0" y="0" width="1200" height="700" rx="16" fill="#FFFFFF"/>
+  <rect x="0.5" y="0.5" width="1199" height="699" rx="16" fill="none" stroke="#E3E7EB"/>
+
+  <!-- header -->
+  <text x="40" y="46" font-size="30" font-weight="800" fill="#1B3139">videoRAG</text>
+  <text x="42" y="70" font-size="14" fill="#5A6672">Arquitectura de referencia · indexación y búsqueda semántica de video</text>
+
+  <!-- Databricks logo (glyph + wordmark) -->
+  <g>
+    <polygon points="1006,32 1032,25 1032,29 1006,36" fill="#FF3621"/>
+    <polygon points="1006,40 1032,33 1032,37 1006,44" fill="#FF3621"/>
+    <polygon points="1006,48 1032,41 1032,45 1006,52" fill="#FF3621"/>
+    <text x="1040" y="48" font-size="20" font-weight="700" fill="#FF3621">databricks</text>
+  </g>
+
+  <line x1="40" y1="88" x2="1160" y2="88" stroke="#EDEFF2"/>
+
+  <!-- ===================== NODES ===================== -->
+
+  <!-- Usuario -->
+  <rect x="40" y="330" width="120" height="60" rx="12" fill="#FFFFFF" stroke="#C9D1D9" stroke-width="1.5"/>
+  <text x="100" y="365" font-size="14" font-weight="600" fill="#1B3139" text-anchor="middle">Usuario</text>
+
+  <!-- videoRAG App -->
+  <rect x="210" y="318" width="170" height="86" rx="12" fill="#FFFFFF" stroke="#FF3621" stroke-width="2"/>
+  <text x="295" y="352" font-size="15" font-weight="700" fill="#1B3139" text-anchor="middle">videoRAG App</text>
+  <text x="295" y="372" font-size="11.5" fill="#5A6672" text-anchor="middle">Databricks App · Streamlit</text>
+
+  <!-- ===== Indexación container ===== -->
+  <rect x="430" y="108" width="470" height="198" rx="14" fill="#FFF6F4" stroke="#FFC9BD" stroke-width="1.5"/>
+  <text x="450" y="132" font-size="14" font-weight="700" fill="#FF3621">① Indexación · Job de Databricks</text>
+
+  <!-- chips row A -->
+  <rect x="448" y="146" width="116" height="46" rx="9" fill="#FFFFFF" stroke="#E7C3BB"/>
+  <text x="506" y="167" font-size="12.5" font-weight="600" fill="#1B3139" text-anchor="middle">ffmpeg</text>
+  <text x="506" y="182" font-size="10" fill="#5A6672" text-anchor="middle">audio + frames</text>
+
+  <rect x="588" y="146" width="118" height="46" rx="9" fill="#FFFFFF" stroke="#E7C3BB"/>
+  <text x="647" y="167" font-size="12.5" font-weight="600" fill="#1B3139" text-anchor="middle">Whisper</text>
+  <text x="647" y="182" font-size="10" fill="#5A6672" text-anchor="middle">transcripción</text>
+
+  <rect x="730" y="146" width="152" height="46" rx="9" fill="#FFFFFF" stroke="#E7C3BB"/>
+  <text x="806" y="167" font-size="12.5" font-weight="600" fill="#1B3139" text-anchor="middle">OCR de frames</text>
+  <text x="806" y="182" font-size="10" fill="#5A6672" text-anchor="middle">ai_parse_document · SQL WH</text>
+
+  <!-- chips row B -->
+  <rect x="448" y="234" width="230" height="46" rx="9" fill="#FFFFFF" stroke="#E7C3BB"/>
+  <text x="563" y="255" font-size="12.5" font-weight="600" fill="#1B3139" text-anchor="middle">LLM · insights</text>
+  <text x="563" y="270" font-size="10" fill="#5A6672" text-anchor="middle">resumen · temas · entidades · capítulos</text>
+
+  <rect x="700" y="234" width="182" height="46" rx="9" fill="#FFFFFF" stroke="#E7C3BB"/>
+  <text x="791" y="255" font-size="12.5" font-weight="600" fill="#1B3139" text-anchor="middle">embeddings</text>
+  <text x="791" y="270" font-size="10" fill="#5A6672" text-anchor="middle">por chunk (1024d)</text>
+
+  <!-- inner arrows Indexación -->
+  <line x1="564" y1="169" x2="586" y2="169" stroke="#8B95A1" stroke-width="1.4" marker-end="url(#arw)"/>
+  <line x1="706" y1="169" x2="728" y2="169" stroke="#8B95A1" stroke-width="1.4" marker-end="url(#arw)"/>
+  <path d="M806,192 C770,214 610,214 566,234" fill="none" stroke="#8B95A1" stroke-width="1.4" marker-end="url(#arw)"/>
+  <line x1="678" y1="257" x2="700" y2="257" stroke="#8B95A1" stroke-width="1.4" marker-end="url(#arw)"/>
+
+  <!-- ===== Consulta container ===== -->
+  <rect x="430" y="430" width="470" height="196" rx="14" fill="#EEF4FF" stroke="#BDD3FF" stroke-width="1.5"/>
+  <text x="450" y="454" font-size="14" font-weight="700" fill="#1A56DB">② Consulta</text>
+
+  <rect x="452" y="470" width="205" height="86" rx="10" fill="#FFFFFF" stroke="#BDD3FF"/>
+  <text x="554" y="497" font-size="13" font-weight="700" fill="#1B3139" text-anchor="middle">Búsqueda semántica</text>
+  <text x="554" y="516" font-size="10.5" fill="#5A6672" text-anchor="middle">embed del query</text>
+  <text x="554" y="531" font-size="10.5" fill="#5A6672" text-anchor="middle">→ pgvector top-k</text>
+
+  <rect x="672" y="470" width="210" height="86" rx="10" fill="#FFFFFF" stroke="#BDD3FF"/>
+  <text x="777" y="497" font-size="13" font-weight="700" fill="#1B3139" text-anchor="middle">Agente RAG</text>
+  <text x="777" y="516" font-size="10.5" fill="#5A6672" text-anchor="middle">embed → retrieve top-k</text>
+  <text x="777" y="531" font-size="10.5" fill="#5A6672" text-anchor="middle">→ LLM (respuesta + citas)</text>
+
+  <text x="450" y="600" font-size="10.5" fill="#5A6672" font-style="italic">Resultados con video + minuto · acota a la colección activa o a todas</text>
+
+  <!-- ===== Services (derecha) ===== -->
+  <rect x="960" y="150" width="196" height="74" rx="12" fill="#F1F3F5" stroke="#C9D1D9" stroke-width="1.5"/>
+  <text x="1058" y="182" font-size="13" font-weight="700" fill="#1B3139" text-anchor="middle">Foundation Models</text>
+  <text x="1058" y="200" font-size="10.5" fill="#5A6672" text-anchor="middle">embeddings · LLM</text>
+
+  <!-- Lakebase cylinder -->
+  <g>
+    <path d="M965,332 C965,323 1149,323 1149,332 L1149,406 C1149,415 965,415 965,406 Z" fill="#F1F3F5" stroke="#1B3139" stroke-width="1.5"/>
+    <path d="M965,332 C965,341 1149,341 1149,332" fill="none" stroke="#1B3139" stroke-width="1.5"/>
+    <text x="1057" y="366" font-size="13" font-weight="700" fill="#1B3139" text-anchor="middle">Lakebase</text>
+    <text x="1057" y="383" font-size="10.5" fill="#5A6672" text-anchor="middle">pgvector · HNSW</text>
+  </g>
+
+  <!-- UC Volume cylinder -->
+  <g>
+    <path d="M965,478 C965,470 1149,470 1149,478 L1149,546 C1149,554 965,554 965,546 Z" fill="#F1F3F5" stroke="#C9D1D9" stroke-width="1.5"/>
+    <path d="M965,478 C965,486 1149,486 1149,478" fill="none" stroke="#C9D1D9" stroke-width="1.5"/>
+    <text x="1057" y="510" font-size="13" font-weight="700" fill="#1B3139" text-anchor="middle">UC Volume</text>
+    <text x="1057" y="527" font-size="10.5" fill="#5A6672" text-anchor="middle">videos · frames</text>
+  </g>
+
+  <!-- ===================== ARROWS ===================== -->
+  <!-- Usuario -> App -->
+  <line x1="160" y1="360" x2="206" y2="360" stroke="#8B95A1" stroke-width="1.6" marker-end="url(#arw)"/>
+
+  <!-- App -> Indexación -->
+  <path d="M382,342 C408,300 410,235 430,205" fill="none" stroke="#FF3621" stroke-width="1.8" marker-end="url(#arwR)"/>
+  <text x="392" y="250" font-size="11" font-weight="600" fill="#FF3621">indexar</text>
+
+  <!-- App -> Consulta -->
+  <path d="M382,382 C408,430 410,495 430,520" fill="none" stroke="#1A56DB" stroke-width="1.8" marker-end="url(#arwR)"/>
+  <text x="386" y="470" font-size="11" font-weight="600" fill="#1A56DB">consultar</text>
+
+  <!-- App -> UC Volume (sube video) por el margen inferior -->
+  <path d="M285,404 L285,664 L1057,664 L1057,556" fill="none" stroke="#8B95A1" stroke-width="1.6" marker-end="url(#arw)"/>
+  <text x="640" y="658" font-size="11" fill="#5A6672" text-anchor="middle">sube video</text>
+
+  <!-- UC Volume -> Indexación (lee) -->
+  <path d="M980,478 C935,430 930,350 900,300" fill="none" stroke="#8B95A1" stroke-width="1.5" marker-end="url(#arw)"/>
+  <text x="905" y="405" font-size="10.5" fill="#5A6672">lee audio/frames</text>
+
+  <!-- Indexación (embeddings) -> Foundation Models -->
+  <path d="M882,250 C918,232 936,208 958,196" fill="none" stroke="#8B95A1" stroke-width="1.6" marker-end="url(#arw)"/>
+
+  <!-- Indexación -> Lakebase (escribe) -->
+  <path d="M840,280 C900,300 935,340 963,360" fill="none" stroke="#8B95A1" stroke-width="1.6" marker-end="url(#arw)"/>
+  <text x="852" y="316" font-size="10.5" fill="#5A6672">escribe</text>
+
+  <!-- Consulta <-> Foundation Models -->
+  <path d="M884,486 C965,420 1015,300 1058,226" fill="none" stroke="#1A56DB" stroke-width="1.6" marker-start="url(#arw)" marker-end="url(#arw)" stroke-dasharray="0"/>
+  <text x="905" y="452" font-size="10.5" fill="#1A56DB">embed · LLM</text>
+
+  <!-- Consulta <-> Lakebase -->
+  <path d="M902,516 C940,480 958,440 965,414" fill="none" stroke="#1A56DB" stroke-width="1.6" marker-start="url(#arw)" marker-end="url(#arw)"/>
+  <text x="905" y="470" font-size="10.5" fill="#1A56DB">top-k</text>
+
+  <!-- footer -->
+  <text x="40" y="688" font-size="11" fill="#8B95A1">Foundation Models: databricks-gte-large-en (embeddings) · databricks-claude-sonnet-5 (LLM)   ·   Almacenamiento vectorial: Lakebase (PostgreSQL + pgvector)</text>
+</svg>
