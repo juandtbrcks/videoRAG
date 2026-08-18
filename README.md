@@ -169,17 +169,6 @@ tarifa all-in **~$0.35/hora**); **GPU** = `g4dn.xlarge` (T4, `openai-whisper`, t
 
 ---
 
-## 🧠 Aprendizajes / gotchas
-
-- **Whisper aborta (SIGABRT) en serverless CPU** por conflicto de librerías nativas → el Job corre en **cluster clásico** (o GPU). En CPU se usa `faster-whisper` (int8); en GPU, `openai-whisper`.
-- **Cluster del Job: usar ON_DEMAND**, no spot (el driver spot se reclama a mitad de transcripciones largas).
-- **`ai_parse_document` no corre en Spark clásico** → se ejecuta vía SQL Warehouse serverless (Statement Execution API).
-- **Spark SQL se come el backslash de los literales**: `'\s+'` se convierte en el patrón `s+` (¡borra todas las "s"!). La normalización de espacios se hace en Python, no en SQL.
-- **Modelos de razonamiento (claude-sonnet-5)**: no aceptan el parámetro `temperature` y devuelven `content` como **lista de bloques**, no string.
-- **El modelo de embeddings debe ser consistente por colección** (todos los chunks con el mismo modelo, 1024 dims). Al cambiarlo, reindexa la colección.
-
----
-
 ## 🗺️ Roadmap / ideas
 
 - Miniaturas (thumbnails) en el navegador de videos.
