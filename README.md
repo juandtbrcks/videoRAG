@@ -27,7 +27,7 @@ Todo el contenido indexado y sus *embeddings* viven en **Lakebase** (PostgreSQL 
 
 ## 🏗️ Arquitectura
 
-![Arquitectura de videoRAG](docs/architecture.svg)
+![Arquitectura de videoRAG](docs/diagrams/VideoRAG.png)
 
 **Flujo de consulta:**
 - **🔍 Búsqueda semántica** — el texto del query se convierte a *embedding* (Foundation Models) y se buscan los chunks más cercanos en Lakebase (`cosine` sobre índice **HNSW** de pgvector). Devuelve fragmentos de transcripción y/o OCR con su video y timestamp; se puede acotar a la colección activa o a todas.
