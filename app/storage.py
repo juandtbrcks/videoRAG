@@ -42,13 +42,33 @@ def delete_video_file(volume_path: str):
         pass
 
 
+def _set_job_email(w, job_id: int, email: str):
+    """Configura (o limpia) las notificaciones por correo del Job antes de dispararlo.
+
+    email_notifications se define a nivel Job (no por-run), así que lo actualizamos
+    dinámicamente con el correo de la colección justo antes de run_now. Best-effort:
+    si falla (p.ej. permisos), la indexación continúa igual.
+    """
+    from databricks.sdk.service import jobs as j
+    recipients = [email] if email else []
+    notif = j.JobEmailNotifications(on_success=recipients, on_failure=recipients,
+                                    no_alert_for_skipped_runs=False)
+    w.jobs.update(job_id=job_id, new_settings=j.JobSettings(email_notifications=notif))
+
+
 def trigger_indexing(video_id: str, volume_path: str,
                      whisper_model: str = "small", frame_interval: int = 5,
                      language: str = "auto") -> int:
     """Lanza el Job de indexación con los modelos/Lakebase configurados. Devuelve run_id."""
     w = config.get_workspace_client()
+    job_id = config.indexer_job_id()
+    # notificación por correo de la colección activa (best-effort)
+    try:
+        _set_job_email(w, job_id, str(config.cfg("notify_email") or "").strip())
+    except Exception:
+        pass
     run = w.jobs.run_now(
-        job_id=config.indexer_job_id(),
+        job_id=job_id,
         notebook_params={
             "video_id": video_id,
             "volume_path": volume_path,

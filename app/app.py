@@ -154,10 +154,14 @@ with st.sidebar:
             st.rerun()
         try:
             cnt = db.counts(CID)
-            a, b, cc = st.columns(3)
-            a.metric("Videos", cnt["videos"])
-            b.metric("Indexados", cnt["indexed"])
-            cc.metric("Fragmentos", cnt["chunks"])
+            a, b = st.columns(2)
+            a.metric("Videos indexados", cnt["indexed"],
+                     help=f"{cnt['indexed']} de {cnt['videos']} videos de la colección "
+                          "están indexados.")
+            b.metric("Fragmentos", cnt["chunks"],
+                     help="Piezas vectorizadas para la búsqueda = segmentos de "
+                          "transcripción + frames con texto (OCR), sumados en toda "
+                          "la colección.")
         except Exception as e:
             st.warning(f"Error: {e}")
 
@@ -197,8 +201,10 @@ if view == "Subir":
     up = st.file_uploader("Archivo de video",
                           type=["mp4", "mov", "m4v", "avi", "mkv", "webm"])
     if up is not None:
-        st.video(up)
-        st.caption(f"{up.name} · {up.size/1e6:.1f} MB")
+        pv_col, _ = st.columns([1, 2])   # preview compacto (~1/3 del ancho)
+        with pv_col:
+            st.video(up)
+            st.caption(f"{up.name} · {up.size/1e6:.1f} MB")
         if st.button("🚀 Subir e indexar", type="primary"):
             try:
                 vid = uuid.uuid4().hex[:16]
@@ -282,7 +288,8 @@ elif view == "Mis Videos":
                 m = st.columns(4)
                 m[0].metric("Duración", fmt_ts(v.get("duration_s")))
                 m[1].metric("Idioma", v.get("language") or "—")
-                m[2].metric("Segmentos", v.get("n_segments") or 0)
+                m[2].metric("Segmentos de audio", v.get("n_segments") or 0,
+                            help="Tramos de transcripción del audio (Whisper).")
                 m[3].metric("Frames OCR", v.get("n_frames") or 0)
                 st.markdown("**📝 Resumen**")
                 st.write(v.get("description") or "—")
@@ -450,6 +457,9 @@ elif view == "Colecciones":
     st.header("📚 Colecciones")
     st.caption("Cada colección agrupa videos y tiene su propia configuración de modelos, "
                "indexación y recuperación (persistida en la base de datos).")
+    # notificación sutil tras guardar (sobrevive al st.rerun)
+    if st.session_state.pop("coll_saved", False):
+        st.toast("✅ Configuración guardada", icon="💾")
 
     def _idx(options, val, fb=0):
         return options.index(val) if val in options else fb
@@ -484,7 +494,9 @@ elif view == "Colecciones":
             f'<span class="meta">· {col["n_videos"]} videos · <code>{col["collection_id"]}</code></span>'
             f'<div class="snippet">{col.get("description") or ""}<br>'
             f'emb <code>{cc["embedding_endpoint"]}</code> · llm <code>{cc["llm_endpoint"]}</code> · '
-            f'whisper <code>{cc["whisper_model"]}</code> · compute <code>{cc["compute"]}</code></div></div>',
+            f'whisper <code>{cc["whisper_model"]}</code> · compute <code>{cc["compute"]}</code>'
+            + (f' · 📧 <code>{cc["notify_email"]}</code>' if cc.get("notify_email") else "")
+            + '</div></div>',
             unsafe_allow_html=True)
 
     st.divider()
@@ -525,12 +537,21 @@ elif view == "Colecciones":
             st.markdown("**🔎 Recuperación**")
             cc["top_k"] = st.slider("top-k por defecto", 4, 20, int(cc["top_k"]))
 
+            st.markdown("**📧 Notificación**")
+            cc["notify_email"] = st.text_input(
+                "Correo para avisar cuando termine la indexación",
+                value=cc.get("notify_email") or "",
+                placeholder="nombre@empresa.com",
+                help="Al terminar (o fallar) la indexación de un video de esta colección, "
+                     "el Job de Databricks enviará un correo a esta dirección. Déjalo vacío "
+                     "para no notificar.").strip()
+
             saved = st.form_submit_button("💾 Guardar configuración", type="primary")
         if saved:
             try:
                 db.update_collection(CID, ed_name.strip() or active_coll["name"],
                                      ed_desc.strip(), cc)
-                st.success("Colección actualizada.")
+                st.session_state["coll_saved"] = True
                 st.rerun()
             except Exception as e:
                 st.error(f"Error: {e}")
