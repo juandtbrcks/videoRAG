@@ -39,11 +39,12 @@ DEFAULTS = {
     "frame_interval":     int(os.environ.get("FRAME_INTERVAL", "5")),
     "language":           os.environ.get("LANGUAGE", "auto"),
     "top_k":              int(os.environ.get("TOP_K", "8")),
+    "notify_email":       os.environ.get("NOTIFY_EMAIL", ""),
 }
 
 # Config a nivel COLECCIÓN (se guarda por colección en la BD) vs INFRA/global.
 COLLECTION_KEYS = {"embedding_endpoint", "llm_endpoint", "whisper_model",
-                   "frame_interval", "language", "compute", "top_k"}
+                   "frame_interval", "language", "compute", "top_k", "notify_email"}
 
 # RUNTIME  = overrides de infra/global por-sesión (lb_*, volúmenes)
 # ACTIVE_COLLECTION = config de la colección activa (poblada por app.py)
