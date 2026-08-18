@@ -122,7 +122,50 @@ La configuración de **modelos, indexación (Whisper/frames/idioma/compute) y to
 
 ## 💵 Notas de costo (orientativo)
 
-Por video de ~20 min en **CPU** (`m5d.xlarge`, ~25 min de job): **~$0.30–0.65 USD**, dominado por el cluster (~$0.15), el OCR (`ai_parse_document` por frame) y las 3 llamadas del LLM de enriquecimiento; embeddings ~despreciable. La **GPU** cuesta parecido pero termina en ~5-8 min. Palancas: bajar el modelo de Whisper, subir el intervalo de frames, mantener un cluster tibio.
+> ⚠️ **Aviso:** las cifras de esta sección son **estimaciones** calculadas con **precios públicos
+> de lista** (USD) con fines ilustrativos. **No constituyen una cotización.** El costo real puede
+> variar según la **nube** (AWS/Azure/GCP), la **región**, los **precios vigentes**, el **tier/edición**
+> de Databricks, tus **descuentos o tarifas negociadas** y la **configuración de la colección**.
+> Valida siempre con la [calculadora de precios de Databricks](https://www.databricks.com/product/pricing)
+> y los precios de tu proveedor de nube.
+
+Los números de abajo sirven para dimensionar. El costo lo dominan el **tiempo de cluster** y el
+**OCR por frame**; los embeddings son despreciables.
+
+**Supuestos:** Whisper `small`, 1 frame cada 5 s para OCR (`ai_parse_document` en SQL Warehouse
+serverless), 3 llamadas de enriquecimiento al LLM (`claude-sonnet-5`), embeddings
+`gte-large-en`. **CPU** = `m5d.xlarge` single-node clásico (ON_DEMAND, `faster-whisper` int8,
+tarifa all-in **~$0.35/hora**); **GPU** = `g4dn.xlarge` (T4, `openai-whisper`, tarifa all-in
+**~$0.85/hora**). Incluye ~5–7 min de arranque en frío del cluster.
+
+> ⚠️ Todas las celdas de costo son **por video** (costo total de indexar ese video), **no** por
+> hora. El renglón de *cluster* = tiempo del job × la tarifa por hora de arriba.
+
+### Comparativo por video
+
+| Concepto | Video 20 min | Video 1 h |
+|---|---|---|
+| Frames a OCR (@ 5 s) | ~240 | ~720 |
+| Fragmentos indexados (transcripción + OCR) | ~150–250 | ~500–800 |
+| **⏱️ Tiempo de indexación — CPU** | **~20–25 min** | **~55–75 min** |
+| **⏱️ Tiempo de indexación — GPU** | **~5–8 min** | **~12–18 min** |
+| Cluster (tiempo del job) — CPU | ~$0.12–0.18 | ~$0.30–0.45 |
+| Cluster (tiempo del job) — GPU | ~$0.08–0.12 | ~$0.15–0.25 |
+| OCR (`ai_parse_document`, warehouse serverless) | ~$0.05–0.15 | ~$0.15–0.45 |
+| LLM enriquecimiento (3 llamadas) | ~$0.03–0.08 | ~$0.06–0.15 |
+| Embeddings | <$0.01 | ~$0.01–0.02 |
+| **💵 Total estimado — CPU** | **~$0.25–0.55** | **~$0.60–1.15** |
+| **💵 Total estimado — GPU** | **~$0.20–0.45** | **~$0.45–0.90** |
+
+> **Lectura rápida:** para clips cortos CPU y GPU cuestan parecido, pero **para videos largos la
+> GPU suele salir más barata y mucho más rápida**, porque el tiempo de cluster (que domina el costo)
+> se reduce ~5×.
+
+**Palancas para bajar el costo:**
+- **Whisper más ligero** (`base`/`tiny`) si no necesitas máxima fidelidad de transcripción.
+- **Subir el intervalo de frames** (p. ej. 10–15 s) → menos llamadas de OCR, el mayor ahorro en videos largos.
+- **GPU para lotes o videos largos**; CPU para pruebas puntuales.
+- **Mantener el cluster tibio** al indexar varios videos seguidos (evita pagar el arranque en frío repetido).
 
 ---
 
