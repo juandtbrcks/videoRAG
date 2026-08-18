@@ -10,7 +10,12 @@ import streamlit as st
 
 import config
 import storage
-import agent
+try:
+    import agent_graph as agent   # agente LangGraph + tools + MLflow tracing
+    AGENT_KIND = "LangGraph"
+except Exception:
+    import agent                  # fallback: RAG lineal de un paso
+    AGENT_KIND = "lineal"
 from db import get_db
 
 st.set_page_config(page_title="videoRAG", page_icon="🎬",
@@ -394,8 +399,8 @@ elif view == "Buscar":
 # ============================================================
 elif view == "Agente":
     st.header(f"💬 Agente · {active_coll['name'] if active_coll else CID}")
-    st.caption("El agente responde con base en el contenido indexado de la colección "
-               "activa y cita el video y minuto de cada dato.")
+    st.caption(f"Agente **{AGENT_KIND}** · responde con base en el contenido indexado de la "
+               "colección activa y cita el video y minuto de cada dato.")
     ctop = st.columns([2, 1, 1])
     top_k = ctop[1].slider("Contexto (top-k)", 4, 16, min(16, max(4, int(config.cfg("top_k")))))
     agent_all = ctop[2].checkbox("Todas las colecciones", value=False)

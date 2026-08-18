@@ -43,3 +43,7 @@ env:
     value: databricks-gte-large-en
   - name: LLM_ENDPOINT
     value: databricks-claude-sonnet-5
+
+  # --- MLflow tracing del agente LangGraph (best-effort) ---
+  - name: MLFLOW_EXPERIMENT
+    value: /Users/juan.gordon@databricks.com/video_indexer_agent

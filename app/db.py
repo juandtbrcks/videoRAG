@@ -220,6 +220,20 @@ class Database:
             "SELECT start_time, text FROM video_chunks "
             "WHERE video_id=%s AND source_type='ocr' ORDER BY start_time", (video_id,))
 
+    def search_entities(self, term: str, collection_id: Optional[str] = None,
+                        limit: int = 30) -> List[Dict]:
+        """Busca entidades (personas, organizaciones, temas…) por término, con el
+        video donde aparecen. Útil para que el agente ubique menciones."""
+        where = ["e.entity_value ILIKE %s"]
+        args: list = [f"%{term}%"]
+        if collection_id:
+            where.append("v.collection_id = %s"); args.append(collection_id)
+        args.append(limit)
+        return self._query(
+            "SELECT e.video_id, v.file_name, e.entity_type, e.entity_value, e.mentions "
+            "FROM video_entities e JOIN videos v ON v.video_id = e.video_id "
+            f"WHERE {' AND '.join(where)} ORDER BY e.mentions DESC LIMIT %s", tuple(args))
+
     # ------------------------- Búsqueda vectorial -------------------------
     def search(self, embedding: List[float], top_k: int = 8,
                video_id: Optional[str] = None, source_type: Optional[str] = None,
